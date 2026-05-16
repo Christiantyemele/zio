@@ -45,10 +45,12 @@ object Blocking {
 
   /**
    * Signals to the scheduler that the current thread is about to block. This
-   * method is a no-op except when the current thread is a ZScheduler.Worker. In
+   * method is a no-op except when the current thread is a scheduler worker. In
    * that case, the worker is marked as "blocking" and a new worker is spawned
    * to replace it.
    */
-  private[zio] final def signalBlocking(): Unit =
+  private[zio] final def signalBlocking(): Unit = {
     ZScheduler.markCurrentWorkerAsBlocking()
+    NioScheduler.markCurrentWorkerAsBlocking()
+  }
 }
